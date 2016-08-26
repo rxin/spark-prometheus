@@ -1,0 +1,20 @@
+language: scala
+sudo: false
+cache:
+  directories:
+    - $HOME/.ivy2
+matrix:
+  include:
+    # Spark 2.0.0 and Scala 2.11
+    - jdk: openjdk7
+      scala: 2.11.7
+      env: TEST_HADOOP_VERSION="2.2.0" TEST_SPARK_VERSION="2.0.0"
+    # Spark 2.0.0 and Scala 2.10
+    - jdk: openjdk7
+      scala: 2.10.4
+      env: TEST_HADOOP_VERSION="2.2.0" TEST_SPARK_VERSION="2.0.0"
+script:
+  - sbt -Dhadoop.testVersion=$TEST_HADOOP_VERSION -Dspark.testVersion=$TEST_SPARK_VERSION ++$TRAVIS_SCALA_VERSION coverage test
+  - sbt ++$TRAVIS_SCALA_VERSION scalastyle
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
