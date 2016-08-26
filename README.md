@@ -7,6 +7,7 @@ This library is still work-in-progress. The main remaining TODO before GA are:
   - Automatically infer start and end time via query predicates
   - Allow reading endpoint from a session wide config
 - Clean up the code (especially the JSON parsing part)
+- Error handling
 
 Once polished, I will move this over to Databricks' official repository.
 
