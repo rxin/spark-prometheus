@@ -6,11 +6,11 @@ cache:
 matrix:
   include:
     # Spark 2.0.0 and Scala 2.11
-    - jdk: openjdk7
+    - jdk: oraclejdk8
       scala: 2.11.7
       env: TEST_HADOOP_VERSION="2.2.0" TEST_SPARK_VERSION="2.0.0"
     # Spark 2.0.0 and Scala 2.10
-    - jdk: openjdk7
+    - jdk: oraclejdk8
       scala: 2.10.4
       env: TEST_HADOOP_VERSION="2.2.0" TEST_SPARK_VERSION="2.0.0"
 script:
