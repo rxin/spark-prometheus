@@ -16,6 +16,7 @@
 
 package com.databricks.spark.prometheus
 
+import java.io.IOException
 import java.net.URLEncoder
 import java.util.{List => JList, Map => JMap}
 
@@ -61,17 +62,22 @@ object PrometheusClient {
 
     // This is pretty hacky, but it is a pain to work with JSON in a type safe language
     // where the data is actually dynamically typed ...
-    val map = new ObjectMapper().readValue(json, classOf[JMap[String, Object]])
+    try {
+      val map = new ObjectMapper().readValue(json, classOf[JMap[String, Object]]) 
+      val data = map.get("data").asInstanceOf[JMap[String, Object]]
+      val result = data.get("result").asInstanceOf[JList[JMap[String, Object]]]
 
-    val data = map.get("data").asInstanceOf[JMap[String, Object]]
-    val result = data.get("result").asInstanceOf[JList[JMap[String, Object]]]
-
-    result.asScala.map { item =>
+      result.asScala.map { item =>
       val labels = item.get("metric").asInstanceOf[JMap[String, String]].asScala.toSeq
       val values = item.get("values").asInstanceOf[JList[JList[Object]]].asScala.map { v =>
         ((v.get(0).asInstanceOf[Double] * 1000).toLong, v.get(1).asInstanceOf[String])
       }
       new PrometheusResult(labels, values)
+      }
+    } catch {
+      case ioe: IOException => log.error("Error while reading value from JSON");
+                               throw ioe
+      
     }
   }
 }
