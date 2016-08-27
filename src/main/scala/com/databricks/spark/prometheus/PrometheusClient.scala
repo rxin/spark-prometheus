@@ -62,9 +62,9 @@ object PrometheusClient {
 
     // This is pretty hacky, but it is a pain to work with JSON in a type safe language
     // where the data is actually dynamically typed ...
-    
+    val map
     try {
-    val map = new ObjectMapper().readValue(json, classOf[JMap[String, Object]])
+      map = new ObjectMapper().readValue(json, classOf[JMap[String, Object]])
     } catch {
       case ioe: IOException => log.error("Error while reading value from JSON")
     }
