@@ -73,6 +73,7 @@ object PrometheusClient {
         ((v.get(0).asInstanceOf[Double] * 1000).toLong, v.get(1).asInstanceOf[String])
       }
       new PrometheusResult(labels, values)
+      }
     } catch {
       case ioe: IOException => log.error("Error while reading value from JSON")
     }
