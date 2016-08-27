@@ -75,7 +75,9 @@ object PrometheusClient {
       new PrometheusResult(labels, values)
       }
     } catch {
-      case ioe: IOException => log.error("Error while reading value from JSON")
+      case ioe: IOException => log.error("Error while reading value from JSON");
+                               throw ioe
+      
     }
   }
 }
